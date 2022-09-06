@@ -2,29 +2,38 @@ import React, {useEffect} from 'react';
 import { Paper, Typography, CircularProgress, Divider } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-import { useParams, useHistory } from 'react-router-dom';
-
-import { getPost } from '../../actions/posts';
-
+//import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { getPost, getPostsBySearch } from '../../actions/posts';
 import useStyles from './styles';
 
 const PostDetails = () => {
-    const { post, posts, isLoading } = useSelector((state) => state.posts);
+    //const { post, posts, isLoading } = useSelector((state) => state.posts);
+    const { post, isLoading } = useSelector((state) => state.posts);
     const dispatch = useDispatch();
-    const history = useHistory();
-    const classes = useStyles();
+    //const history = useHistory();
+   const classes = useStyles();
     const { id } = useParams();
 
     useEffect(() => {
        dispatch(getPost(id))
-    }, [id])
+    }, [id]);
+
+    useEffect(() => {
+      if (post) {
+        dispatch(getPostsBySearch({ search: 'none', tags: post?.tags.join(',') }));
+      }
+    }, [post]);
 
     if(!post) return null;
 
-    if(isLoading) {
-        return <Paper elevation={6} className={classes.loadingPaper} >
+    //const openPost = (_id) => history.push(`/posts/${_id}`);
+   if(isLoading) {
+        return (
+        <Paper elevation={6} className={classes.loadingPaper} >
             <CircularProgress size='7em' />
         </Paper>
+        );
     }
 
   return (
@@ -47,7 +56,7 @@ const PostDetails = () => {
         </div>
       </div>
       </Paper>
-  )
-}
+  );
+};
 
 export default PostDetails

@@ -17,9 +17,10 @@ const Paginate = ({ page }) => {
     //if there is a page, dispatch the getPost function from the actions
      
     useEffect(() => {
-        if(page) dispatch(getPosts());
-
-    }, [page])
+        if(page) {
+        dispatch(getPosts(page));
+        }
+    }, [dispatch, page])
 
     //run the useEffect everytime the page changes
 

@@ -9,7 +9,7 @@ const router = express.Router();
 export const getPosts = async (req, res) => { 
     const { page } = req.query
     try {
-        const LIMIT = 4;
+        const LIMIT = 8;
         const startIndex = (Number(page) - 1 ) * LIMIT; //gets the starting index of every page
         const total = await PostMessage.countDocuments({})// tells how many posts there are, last page we can scroll to
         const posts = await PostMessage.find().sort({ _id: -1}).limit(LIMIT).skip(startIndex);
